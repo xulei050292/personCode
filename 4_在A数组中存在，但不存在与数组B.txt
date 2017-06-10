@@ -1,0 +1,32 @@
+	public void getExistInArrayANotInArrayB() {
+	
+		//两个数组内不存在重复数据
+		int[] arrTestA = {1, 2, 3, 4, 5, 1, 78};
+        int[] arrTestB = {11, 1, 22, 3, 43, 4, 5, 11,  22};
+      
+        Arrays.sort(arrTestA);
+        Arrays.sort(arrTestB);
+        
+        int i=0,j=0;
+        ArrayList<Integer> arrResult = new ArrayList<Integer>();
+        
+        while(i < arrTestA.length && j < arrTestB.length){
+            if(arrTestA[i] < arrTestB[j]){
+            	arrResult.add(arrTestA[i]);
+                i++;
+            }
+            else if(arrTestA[i] == arrTestB[j]){
+                i++;
+                j++;
+            }
+            else{
+                j++;
+            }
+        }
+        if(i < arrTestA.length){
+            for(;i< arrTestA.length;++i){
+            	arrResult.add(arrTestA[i]);
+            }
+        }
+        System.out.println(arrResult);
+	}

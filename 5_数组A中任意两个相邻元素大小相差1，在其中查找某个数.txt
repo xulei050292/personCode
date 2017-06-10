@@ -1,0 +1,18 @@
+//这道题目最差时间复杂度也是O（N），所以重点在于能不能找到一种尽可能减少比较次数的方法。
+//如果需要找到所有位置，那么就申请一个数组，放到数组中，一起返回即可。
+	public int find() {
+		int[] num = {1,2,3,2,3,4,3,2,3};
+		int target = 4;
+		int n = num.length;
+		
+		if(n <= 0 ) {
+			return -1;
+		}
+		for (int i = 0; i < n; i++) {
+			if(num[i] == target) {
+				return i;
+			}
+			i += Math.abs(num[i] - target);			
+		}
+		return -1;
+	}	

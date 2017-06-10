@@ -1,0 +1,86 @@
+ArrayList和LinkedList的大致区别如下:
+	1.ArrayList是实现了基于动态数组的数据结构，LinkedList基于链表的数据结构。 
+	2.对于随机访问get和set，ArrayList觉得优于LinkedList，因为LinkedList要移动指针。 
+	3.对于新增和删除操作add和remove，LinedList比较占优势，因为ArrayList要移动数据。 
+	
+	String[] arrTestA = {"fadsfd","fas","aaaa","bbbb","cccccc"};
+    String[] arrTeatB = {"aaaa","fdafds","cccccc","afdsaf","aaaa"};
+	
+//求两个字符串数组的并集，利用set的唯一性
+	public void getUnion(String[] arrTestA,String[] arrTestB) {
+		Set<String> set = new HashSet<String>();
+		for (String str : arrTestA) {
+			set.add(str);
+		}
+		for (String str : arrTestB) {
+			set.add(str);
+		}
+		String [] strResult = {};
+		strResult = set.toArray(strResult);
+		
+		for (String string : strResult) {
+			System.out.println(string);
+		}
+	} 
+	
+//求两个数组的交集:利用map的key--value键值对和key的唯一性
+	public void getIntersect(String[] arrTestA,String[] arrTestB) {
+	
+		Map<String, Boolean> map = new HashMap<String,Boolean>();
+		LinkedList<String>   list = new LinkedList<String>();
+		
+		for (String str : arrTestA) {
+			if(!map.containsKey(str)) {
+				map.put(str, Boolean.FALSE);
+			}
+		}
+		
+		for (String str : arrTeatB) {
+			if (map.containsKey(str)) {
+				map.put(str, Boolean.TRUE);
+			}
+		}
+		
+		for (Entry<String, Boolean> entry : map.entrySet()) {
+			if(entry.getValue().equals(Boolean.TRUE)) {
+				list.add(entry.getKey());
+			}
+		}
+		System.out.println(list);
+	}
+
+//求两个字符串数组的差集
+	public void getMinus(String[] arrTestA,String[] arrTestB) {
+		LinkedList<String> list = new LinkedList<String>();
+		LinkedList<String> history = new LinkedList<String>();
+		
+		//找出较长的数组（减）较短的数组
+		String[] arrLonger = arrTestA;
+		String[] arrShorter = arrTestB;
+		if(arrTestA.length < arrTestB.length) {
+			arrLonger = arrTestB;
+			arrShorter = arrTestA;
+		}
+		
+		for (String str : arrLonger) {
+			if(!list.contains(str)) {
+				list.add(str);
+			}
+		}
+		for (String str : arrShorter) {
+			if (list.contains(str)) {
+				history.add(str);
+				list.remove(str);
+			}else {
+				if (!history.contains(str)) {
+					list.add(str);
+				}
+			}
+		}
+		String[] arrResult = {};
+		arrResult = list.toArray(arrResult);
+		for (String string : arrResult) {
+			System.out.println(string);
+		}
+	} 	
+	

@@ -1,0 +1,20 @@
+题目：
+	Determine whether an integer is a palindrome（回文）. Do this without extra space.
+	
+	分析：
+		由于题目已经要求不能使用额外空间，故不可以把数字转换为字符串s，然后对s取反得到s'，判断两字符串是否相等。
+		解决方案是用循环直接将数字取反，最后将得到的新数字与原始数字比较。
+	
+	public class Solution {
+		public boolean isPalindrome(int x) {
+			int tmp = x,result = 0;
+			if(x < 0) {
+				return false;
+			}
+			while(x != 0) {
+				result  = result * 10 + x % 10;
+				x = x / 10;
+			}
+			return result == tmp;
+		}
+	}

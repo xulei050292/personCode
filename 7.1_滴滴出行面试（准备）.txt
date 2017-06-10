@@ -1,0 +1,173 @@
+第一方面：
+	PHP7的新特性：http://developer.51cto.com/art/201510/494674.htm
+
+	1、null合并运算符：
+		由于大量使用三元表达式和 isset()的情况， 我们添加了null合并运算符 (??) 这个语法糖。如果变量存在且值不为NULL， 它就会返回自身的值，
+		否则返回它的第二个操作数。
+		$username = $_GET['user'] ?? 'nobody';  
+		
+	2、函数返回值类型声明
+		<php 
+			function arraysSum(array ...$arrays): array { 
+				return array_map(function(array $array): int { 
+				return array_sum($array); 
+			}, $arrays); 
+		} 
+ 
+		print_r(arraysSum([1,2,3], [4,5,6], [7,8,9])); 
+		
+		PHP 7 增加了一个 declare 指令：strict_types，既使用严格模式。
+		<php 
+			declare(strict_types=1); 
+ 
+			function foo($a) : int { 
+				return $a; 
+		} 
+ 
+		foo(1.0); 
+		# PHP Fatal error:  Uncaught TypeError: Return value of foo() must be of the type integer, float returned in test.php:6
+		
+	3. 标量类型声明
+			PHP 7 中的函数的形参类型声明可以是标量了。在 PHP 5 中只能是类名、接口、array 或者 callable (PHP 5.4，即可以是函数，包括匿名函数)，
+			现在也可以使用 string、int、float和 bool 了。
+
+			<php 
+			// Coercive mode 
+			function sumOfInts(int ...$ints) { 
+				return array_sum($ints); 
+			} 
+			 
+			var_dump(sumOfInts(2, '3', 4.1)); 
+			需要注意的是上文提到的严格模式的问题在这里同样适用
+			
+	4. use 批量声明
+		PHP 7 中 use 可以在一句话中声明多个类或函数或 const 了：
+		<php 
+		use some/namespace/{ClassA, ClassB, ClassC as C}; 
+		use function some/namespace/{fn_a, fn_b, fn_c}; 
+		use const some/namespace/{ConstA, ConstB, ConstC}; 
+		
+	5、太空船操作符（组合比较符）
+			太空船操作符用于比较两个表达式。当$a小于、等于或大于$b时它分别返回-1、0或1。 比较的原则是沿用 PHP 的常规比较规则进行的。
+
+			<?php
+			// 整数
+			echo 1 <=> 1; // 0
+			echo 1 <=> 2; // -1
+			echo 2 <=> 1; // 1
+
+			// 浮点数
+			echo 1.5 <=> 1.5; // 0
+			echo 1.5 <=> 2.5; // -1
+			echo 2.5 <=> 1.5; // 1
+			 
+			// 字符串
+			echo "a" <=> "a"; // 0
+			echo "a" <=> "b"; // -1
+			echo "b" <=> "a"; // 1
+			?>
+			
+	6、	通过 define() 定义常量数组
+
+		Array 类型的常量现在可以通过 define() 来定义。在 PHP5.6 中仅能通过 const 定义。
+
+		<?php
+		define('ANIMALS', [
+			'dog',
+			'cat',
+			'bird'
+		]);
+
+		echo ANIMALS[1]; // 输出 "cat"
+		?>	
+	
+	
+	. 其他的特性
+		其他的一些特性我就不一一介绍了，有兴趣可以查看官方文档：http://php.net/manual/en/migration70.new-features.php
+		简要说几个：
+		PHP 5.3 开始有了匿名函数，现在又有了匿名类了；
+		闭包（ Closure）增加了一个 call 方法；
+		生成器（或者叫迭代器更合适）可以有一个最终返回值（return），也可以通过 yield from 的新语法进入一个另外一个生成器中（生成器委托）。
+		生成器的两个新特性（return 和 yield from）可以组合。具体的表象大家可以自行测试。PHP 7 现在已经到 RC5 了，最终的版本应该会很快到来。		
+			
+第二题：for与foreach那个更快？？？
+	1、总体来说，如果数据库过几十万了，才能看出来快一点还是慢一点，如果低于10万的循环，就不用测试了。php推荐用foreach。
+	2、循环数字数组时,for需要事先count($arr)计算数组长度,需要引入自增变量$i,每次循环都要进行条件判断$i<$c,然后自增$i++,
+	输出数组元素时,$arr[$i]需要进行哈希操作.
+	3、foreach循环数组时,指针会自动指向下一个元素,不需要计算数组长度,没有条件判断和自增变量,调用元素时也没有哈希操作,所以性能肯定要比for和while高.
+	4、另外,for和while对存在键值映射的关联数组无能为力.
+	所以,遍历数组,首选foreach.
+	
+第三题：PHP-FPM的进程控制方式？？？？
+	1、PHP-fpm目前主要又两个分支：
+		分别对应于php-5.2.x的版本和php-5.3.x的版本。
+			在5.2.x的版本中，php-fpm.conf使用的是xml格式，而在新的5.3.x版本中，则是和php.ini一样的配置风格。
+		
+		1、1 在5.2.x版本中，php-fpm.conf中对于进程管理号称是有两种风格，一种是静态(static)的，一种是类似于apache风格(apache-like)的。
+		1、2 在最新的5.3.x的配套php-fpm中，对于进程的管理存在两种风格——static和dynamic。和之前的版本的进程管理其实还是一样的，
+		     只是将apache-like改成了dynamic，这样更容易理解。
+	
+	2、如果设置成static，php-fpm进程数自始至终都是pm.max_children指定的数量，不再增加或减少。
+	   如果设置成dynamic，则php-fpm进程数是动态的，最开始是pm.start_servers指定的数量，如果请求较多，则会自动增加，
+	   保证空闲的进程数不小于pm.min_spare_servers，如果进程数较多，也会进行相应清理，保证多余的进程数不多于pm.max_spare_servers。
+	   这两种不同的进程管理方式，可以根据服务器的实际需求来进行调整。	
+
+	3、参数解释：pm、pm.max_children、pm.start_servers、pm.min_spare_servers和pm.max_spare_servers。
+		3.1：pm表示使用那种方式，有两个值可以选择，就是static（静态）或者dynamic（动态）。
+		3.2：pm.max_children：静态方式下开启的php-fpm进程数量。
+		3.3：pm.start_servers：动态方式下的起始php-fpm进程数量。
+		3.4：pm.min_spare_servers：动态方式下的最小php-fpm进程数量。
+		3.5：pm.max_spare_servers：动态方式下的最大php-fpm进程数量。
+
+	4、如果dm设置为static，那么其实只有pm.max_children这个参数生效。系统会开启设置数量的php-fpm进程。
+	
+	5、如果dm设置为dynamic，那么pm.max_children参数失效，后面3个参数生效。系统会在php-fpm运行开始的时候启动pm.start_servers个php-fpm进程，
+	   然后根据系统的需求动态在pm.min_spare_servers和pm.max_spare_servers之间调整php-fpm进程数。
+	   
+	6、那么，对于我们的服务器，选择哪种执行方式比较好呢？
+		事实上，跟Apache一样，运行的PHP程序在执行完成后，或多或少会有内存泄露的问题；
+		这也是为什么开始的时候一个php-fpm进程只占用3M左右内存，运行一段时间后就会上升到20-30M的原因了。
+		
+		6.1：对于内存大的服务器（比如8G以上）来说，指定静态的max_children实际上更为妥当，因为这样不需要进行额外的进程数目控制，会提高效率。
+		因为频繁开关php-fpm进程也会有时滞，所以内存够大的情况下开静态效果会更好。数量也可以根据 内存/30M 得到，比如8GB内存可以设置为100，
+		那么php-fpm耗费的内存就能控制在 2G-3G的样子。如果内存稍微小点，比如1G，那么指定静态的进程数量更加有利于服务器的稳定。
+		这样可以保证php-fpm只获取够用的内存，将不多的内存分配给其他应用去使用，会使系统的运行更加畅通。
+		
+		6.2:对于小内存的服务器来说，比如256M内存的VPS，即使按照一个20M的内存量来算，10个php-cgi进程就将耗掉200M内存，那系统的崩溃就应该很正常了。
+		因此应该尽量地控制php-fpm进程的数量，大体明确其他应用占用的内存后，给它指定一个静态的小数量，会让系统更加平稳一些。
+		或者使用动态方式，因为动态方式会结束掉多余的进程，可以回收释放一些内存，所以推荐在内存较少的服务器或VPS上使用。
+		具体最大数量根据 内存/20M 得到。比如说512M的VPS，建议pm.max_spare_servers设置为20。
+		至于pm.min_spare_servers，则建议根据服务器的负载情况来设置，比较合适的值在5~10之间。	
+			
+第四题：mysql分表的3种方法
+		http://blog.51yip.com/mysql/949.html
+		
+第五题：树的递归和非递归遍历
+		http://blog.csdn.net/rebirth_love/article/details/51312992
+
+第六题：给定a、b两个文件，各存放50亿个url，每个url各占用64字节，内存限制是4G，如何找出a、b文件共同的url？
+	思考：可以估计每个文件的大小为5G*64=300G，远大于4G。所以不可能将其完全加载到内存中处理。考虑采取分而治之的方法。
+	
+	思路：遍历文件a，对每个url求取hash(url)%1000，然后根据所得值将url分别存储到1000个小文件（设为a0,a1,...a999）当中。这样每个小文件的大小约为300M。
+	      遍历文件b，采取和a相同的方法将url分别存储到1000个小文件(b0,b1....b999)中。
+		  这样处理后，所有可能相同的url都在对应的小文件(a0 vs b0, a1 vs b1....a999 vs b999)当中，不对应的小文件（比如a0 vs b99）不可能有相同的url。
+		  然后我们只要求出1000对小文件中相同的url即可。 
+	      比如对于a0 vs b0，我们可以遍历a0，将其中的url存储到hash_map当中。
+		  然后遍历b0，如果url在hash_map中，则说明此url在a和b中同时存在，保存到文件中即可。 
+		  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			

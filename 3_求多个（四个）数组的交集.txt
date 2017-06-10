@@ -1,0 +1,46 @@
+	public static int[] getUnionSet(int[] A , int[] B , int[] C , int[] D) {
+		
+		if(A == null || B == null || C == null || D == null)
+            return null;
+    
+	    if(A.length == 0 || B.length == 0 || C.length == 0 || D.length == 0)
+	        return null;
+	    
+	    int lenA = A.length;
+	    int lenB = B.length;
+	    int lenC = C.length;
+	    int lenD = D.length;
+	    
+	    //求出最小长度：结果集必定小于等于这个结果
+	    int minLen = Math.min(lenA, Math.min(lenB, Math.min(lenC, lenD)));
+	    
+	    int[] rst = new int[minLen];
+	    int i = 0;
+	    int j = 0;
+	    int m = 0;
+	    int k = 0;
+	    
+	    int index = 0;
+	    
+	    while(i < lenA && j < lenB && m < lenC && k < lenD){
+	    	if(A[i] == B[j] && B[j] == C[m] && C[m] == D[k]){
+                rst[index++] = A[i];
+                i++;
+                j++;
+                m++;
+                k++;
+	        }else {
+                int min = Math.min(A[i], Math.min(B[j], Math.min(C[m], D[k])));
+                //谁小，谁的下表前移一位
+                if(A[i]==min)        
+                	i++;
+                if(B[j]==min)        
+                	j++;
+                if(C[m]==min)        
+                	m++;
+                if(D[k]==min)        
+                	k++;
+	        }
+		    }
+		    return rst;
+     }
