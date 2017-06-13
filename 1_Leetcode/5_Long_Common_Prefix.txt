@@ -1,0 +1,64 @@
+题目：
+	Write a function to find the longest common prefix string amongst an array of strings.
+    举个例子：假如数组为["123","12","4"]，经过这个方法返回的结果就应该是""。
+	因为"123"，"12"，"4"并没有共同的前缀，虽然"123"，"12"的公共最长前缀是"12"，
+	但是这个公共前缀"12"与"4"没有公共前缀，所以最后返回的结果就是""。
+	
+	//自己的解法
+	public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+       if (strs.length == 0) {
+			return "";
+		}else {
+			String result = strs[0];
+			for (int i = 1; i < strs.length; i++) {
+				String tmp = "";
+				String testDataOne = strs[i];
+				int length = result.length() > testDataOne.length() ? testDataOne.length() : result.length();
+				for (int j = 0; j < length; j++) {
+					if (result.charAt(j) == testDataOne.charAt(j)) {
+						tmp += result.charAt(j);
+					}else {
+						break;
+					}
+				}
+				result = tmp;
+			}
+			return result;
+		}
+    }
+}
+
+	//优秀的解法
+	public class Solution {
+		public String longestCommonPrefix(String[] strs) {
+		   if (strs == null || strs.length == 0) {
+				return "";
+			}
+			String pre = strs[0];
+			int i = 1;
+			while (i < strs.length) {
+				while (strs[i].indexOf(pre) != 0) {   //此处不能用if
+					pre = pre.substring(0, pre.length() - 1);   //理解此处的作用
+				}
+				i++;
+			}
+			return pre;
+		}
+	}
+
+	分析：
+	String[] testData = {""};
+	int a = testData[0].indexOf("aba");
+	System.out.println(a);
+	结果是 -1；
+	
+	String pre = "fads";
+	pre = pre.substring(0, pre.length() - 1);
+	System.out.println(pre);
+	
+	结果是：fad
+
+
+
+
