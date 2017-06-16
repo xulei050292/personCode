@@ -1,0 +1,59 @@
+题目：
+
+	Given a string s consists of upper/lower-case alphabets and empty space characters ' ', return the length of last word in the string.
+	If the last word does not exist, return 0.
+	Note: A word is defined as a character sequence consists of non-space characters only.
+
+	For example, 
+	Given s =     "Hello World",   "a  b  "
+	return        5.                1
+	
+	自己的代码：使用java库函数
+	 public int lengthOfLastWord(String s) {
+        String string = s.trim();
+		char[] cs = string.toCharArray();
+		int len = cs.length;
+		int lastWordLen = 0;
+	
+		for (int i = 0; i < len; i++) {
+			if (cs[i] != ' ') {
+				lastWordLen++;
+			}else if (cs[i] == ' ') {
+				lastWordLen = 0;
+			}
+		}
+		return lastWordLen;   
+    }
+	
+	同样是使用库函数，一行可以解决：
+	public int lengthOfLastWord(String s) {
+        return s.trim().length() - s.trim().lastIndexOf(" ") - 1; 
+    }
+	
+	
+	不使用库函数的代码：
+	【分析】本题不难，但是要注意的是，注意s=" a  b  "这种情况，最后是空格的先全部丢掉，不做为单词分隔的标志但也不算做字符串长度。从后遍历单词，遇到空格退出
+	
+	public int lengthOfLastWord(String s) {
+		int len = s.length();
+		if (len == 0) {
+			return 0;
+		}
+		int i = 0;
+		int lengthOfLastWordCount = 0;
+		while (s.charAt(len - 1) == ' ') {
+			len--;
+		}
+		for (int j = len - 1; j >= 0; j--) {
+			if (s.charAt(j) == ' ') {
+				break;
+			}
+			lengthOfLastWordCount++;
+		}
+		return lengthOfLastWordCount;
+    }
+	
+	
+	
+	
+	
