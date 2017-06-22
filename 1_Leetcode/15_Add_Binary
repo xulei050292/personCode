@@ -1,0 +1,57 @@
+67. Add Binary
+
+	Given two binary strings, return their sum (also a binary string).
+
+	For example,
+	a = "11"
+	b = "1"
+	Return "100".
+	
+	
+	方法一：6ms
+	a = '9' - '0'; //使用这种方法，就可以把char类型的数字字符，转化成int类型。
+	public class Solution {
+		public String addBinary(String a, String b) {
+			int lenA = a.length();
+			int lenB = b.length();
+			int maxLen = Math.max(lenA, lenB);
+			StringBuilder sb = new StringBuilder();
+			int plus = 0;
+			
+			for (int i = 0; i < maxLen; i++) {
+				int tempA = lenA > i ? a.charAt(lenA - i - 1) - '0' : 0;
+				int tempB = lenB > i ? b.charAt(lenB - i - 1) - '0' : 0;
+				int curSum = tempA + tempB + plus;
+				sb.insert(0, curSum % 2);
+				plus = curSum > 1 ? 1 : 0;
+			}
+			if (plus == 1) {
+				sb.insert(0, plus);
+			}
+			return sb.toString();
+		}
+    }
+	
+	方法二：3ms
+	public static String addBinary(String a, String b) {
+		StringBuilder sb = new StringBuilder();
+		int i = a.length() - 1;
+		int j = b.length() - 1;
+		int carry = 0;
+		
+		while (i >= 0 || j >= 0) {
+			int sum = carry; //把上一次的进位赋值给sum
+			if (j >= 0) {
+				sum += b.charAt(j--) - '0';
+			}
+			if (i >= 0) {
+				sum += a.charAt(i--) - '0';
+			}
+			sb.insert(0, sum % 2);
+			carry = sum / 2;
+		}
+		if (carry != 0) {
+			sb.insert(0, carry);
+		}
+		return sb.toString();
+    }

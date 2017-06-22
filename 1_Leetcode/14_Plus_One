@@ -1,0 +1,71 @@
+题目：
+	66. Plus One
+
+	Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.
+	You may assume the integer do not contain any leading zero, except the number 0 itself.
+	The digits are stored such that the most significant digit is at the head of the list.
+	题目翻译：
+	这道题的要求是给定一个数组表示非负整数，其高位在数组的前面，对这个整数加1。
+	
+	分析：
+	简单的大数加法，遍历数组的每位，同时处理进位，如果最后还有进位，则在数组最前面在插入1即可。  时间复杂度：O(n)， 空间复杂度：O(1)。
+	
+	自己完成代码：
+	public class Solution {
+		public int[] plusOne(int[] digits) {
+			int len = digits.length;
+			int plus = 1;
+			int curSum = 0;
+			
+			for (int i = len - 1; i >= 0; i--) {
+				curSum = digits[i] + plus;
+				if (curSum >= 10) {
+					plus = 1;
+					digits[i] = curSum - 10;
+				}else {
+					plus = 0;
+					digits[i] = curSum;
+				}
+			}
+			if (plus == 1) {//说明最高位也是进位了
+				int[] newDigits = new int[len + 1];
+				newDigits[0] = 1;
+				System.arraycopy(digits, 0, newDigits, 1, len);
+				return newDigits;
+			}
+			return digits;
+		}
+	}
+	java语法学习：
+	java System.arrayCopy使用说明
+	
+	下面是 System.arrayCopy的源代码声明 : 
+	public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+	代码解释:
+　　Object src : 原数组
+    int srcPos : 从元数据的起始位置开始
+　　Object dest : 目标数组
+　　int destPos : 目标数组的开始起始位置
+　　int length  : 要copy的数组的长度
+
+
+	优化代码：充满逻辑和思维推理
+	public static int[] plusOne(int[] digits) {
+		int len = digits.length;
+		for (int i = len - 1; i >= 0; i--) {
+			if (digits[i] < 9) {   //只要某个位置数字小于9，说明只需要判断到此为止。
+				digits[i]++;
+				return digits;
+			}
+			digits[i] = 0;   //不小于9，只能是9 ，写0，进位。
+		}
+		int[] newDigits = new int[len + 1];
+		newDigits[0] = 1;                    //只要是最高位进位，说明后面全是0，new之后，自动赋值为0，根本不需要管。
+		
+		return newDigits;
+    }
+	
+	
+	
+	
+	

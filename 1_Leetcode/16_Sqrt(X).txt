@@ -1,0 +1,31 @@
+题目：
+	Implement int sqrt(int x).
+	Compute and return the square root of x.
+	
+	思路：
+		二分法：我们知道二分法所需要的时间复杂度为O(lgN)，这样就不会超时了
+
+	代码实现：
+	public class Solution {
+		public int mySqrt(int x) {
+		   if (x == 0 || x == 1) {
+				return x;
+			}
+			double low = 0;
+			double hight = x;
+			double mid = 1;
+			double result = 1;
+			
+			while (Math.abs(result - x) > 0.000001) {
+				mid = (low + hight) / 2;
+				result = mid * mid;
+				
+				if (result > x) {
+					 hight = mid;
+				}else {
+					low = mid;
+				}
+			}
+			return (int) mid;
+		}
+	}
