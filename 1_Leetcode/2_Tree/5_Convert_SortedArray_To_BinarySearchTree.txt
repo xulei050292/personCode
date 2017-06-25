@@ -1,0 +1,46 @@
+题目：
+	108. Convert Sorted Array to Binary Search Tree
+
+	Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+	
+	思路：
+		给定有序数组：   1  6  12   24  96   100   115
+		生成的BST结构：  24 6  100  1   12   96    115 
+		
+		根据前后两个数组的中数据所在的下标，可以轻松得到  使用二分法  生成BTS结构的方法。
+		
+	代码：
+		/**
+		 * Definition for a binary tree node.
+		 * public class TreeNode {
+		 *     int val;
+		 *     TreeNode left;
+		 *     TreeNode right;
+		 *     TreeNode(int x) { val = x; }
+		 * }
+		 */
+		public class Solution {
+			public TreeNode sortedArrayToBST(int[] nums) {
+				if (nums.length == 0) {
+					return null;
+				}
+				TreeNode head = helper(nums,0,nums.length - 1);
+				
+				return head;
+			}
+			
+			public TreeNode helper(int[] nums ,int low ,int height) {
+				if (low > height) {
+					return null;
+				}
+				
+				int mid = (low + height) / 2;
+				//生成一个新的节点
+				TreeNode node = new TreeNode(nums[mid]);
+				
+				node.left = helper(nums, low, mid - 1);
+				node.right = helper(nums, mid + 1, height);
+				
+				return node;
+			}
+		}
