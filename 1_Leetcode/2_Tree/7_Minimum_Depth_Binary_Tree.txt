@@ -1,0 +1,62 @@
+题目：
+	111. Minimum Depth of Binary Tree
+
+	Given a binary tree, find its minimum depth.
+	The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+	
+	思路：
+		此题正好和Maximum Depth of Binary Tree一题是相反的，即寻找二叉树的最小的深度值：从根节点到最近的叶子节点的距离。
+
+		结题思路：和找最大距离不同之处在于：找最小距离要注意(l<r)? l+1:r+1的区别应用；
+		因为可能存在左右子树为空的情况，此时值就为0，但显然值是不为0的（只有当二叉树为空才为0），所以，在这里注意一下即可！
+	
+实现代码：
+
+	递归实现
+
+	public class Solution {
+		public int minDepth(TreeNode root) {
+			if(root == null){
+				return 0;
+			}
+			int depth1 = minDepth(root.left);
+			int depth2 = minDepth(root.right);
+			if(depth1 == 0){
+				return depth2 + 1;
+			}
+			if(depth2 == 0){
+				return depth1 + 1;
+			}
+			return depth1 < depth2 ? depth1 + 1 : depth2 + 1;
+		}
+	}
+	
+	
+	遍历实现方式：
+	public class Solution {
+		public int minDepth(TreeNode root) {
+			if(root == null){
+				return 0;
+			}
+			LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+			list.add(root);
+			int level = 0;
+			while(!list.isEmpty()) {
+				int levelLen = list.size();
+				level++;
+				for(int i = 0; i < levelLen; i++) {
+					TreeNode node = list.removeFirst();
+					if(node.left == null && node.right == null) {     //当某个节点的左右子树都是空，则是截止条件。
+						return level;
+					}
+					if(node.left != null) {
+						list.add(node.left);
+					}
+					if(node.right != null) {
+						list.add(node.right);
+					}
+				}
+			}
+			return level;
+		}
+	}

@@ -1,0 +1,88 @@
+题目：
+	110. Balanced Binary Tree
+
+		Given a binary tree, determine if it is height-balanced.
+		For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+		
+	思路：
+	（1）题意为判断一颗树是否为平衡二叉树。
+		（PS：平衡二叉树的特性：它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树）
+	（2）我发现这道题和之前的好多题求解方法类似，属于一解对多题的情形。
+		 可以参考文章从"按层次输出二叉树"到"求解二叉树深度"的总结。你只需要知道如何求解二叉树的深度就可很快得到答案。二叉树深度求解算法可以参照二叉树深度求解算法。
+	（3）一旦我们知道二叉树深度的求解算法后，就可以对二叉树递归判断左右两个子树的深度之差，如果深度差大于1或小于-1，则不是平衡二叉树；
+		 否则，继续遍历该节点下的子树，直到全部遍历完为止。
+	
+	
+		递归解法：
+			public class Solution {
+				public boolean isBalanced(TreeNode root) {
+					if(root == null) {
+						return true;
+					}
+				   int left = depth(root.left);
+				   int right = depth(root.right);
+				   
+				   if(left - right > 1 || left - right < -1) {                    //比较根的两个子节点
+					   return false;
+				   }else {
+					   return isBalanced(root.left) && isBalanced(root.right);    //除了根以外的每个节点的左右必须同时满足才可以。 
+				   }
+				}
+				
+				/**
+				 * 求树的高度
+				 * @param n 树的根结点
+				 * @return 树的高度
+				*/
+				public int depth(TreeNode node){
+					if(node == null) {
+						return 0;
+					}
+					int left = depth(node.left);
+					int right = depth(node.right);
+					return left > right ? left + 1 : right + 1;
+				}
+			}
+		
+		非递归解法：也就是在求树的深度时不使用递归（而是使用DFS 或者BFS）
+		public class Solution {
+			public boolean isBalanced(TreeNode root) {
+				if(root == null) {
+					return true;
+				}
+			   int distance = getDepth(root.left) - getDepth(root.right);
+			   
+			   if(distance > 1 || distance < -1) {
+				   return false;
+			   }else {
+				   return isBalanced(root.left) && isBalanced(root.right);
+			   }
+			}
+			
+			public int getDepth(TreeNode node){
+				if(node == null) {
+					return 0;
+				}
+				int level = 0;
+				LinkedList<TreeNode> list = new LinkedList<TreeNode>(); //使用链表实现BFS，当然常用的使用队列。
+				list.add(node);
+				int first = 0;
+				int last = 1;
+				while(first < list.size()) {
+					last = list.size();
+					while(first < last) {
+						if(list.get(first).left != null) {
+							list.add(list.get(first).left);
+						}
+						if(list.get(first).right != null){
+							list.add(list.get(first).right);
+						}
+						first++;
+					}
+					level++;
+				}
+				return level;
+			}
+		}
+		
+

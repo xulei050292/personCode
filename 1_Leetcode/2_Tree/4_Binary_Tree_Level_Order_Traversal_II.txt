@@ -19,7 +19,7 @@
 	  [3]
 	]
 	
-	思路：这一提和上一题（104. Maximum Depth of Binary Tree）极其相似，只是把数据取出来存到数组中处理一下而已。
+	思路：这一题和上一题（104. Maximum Depth of Binary Tree）极其相似，只是把数据取出来存到数组中处理一下而已。
 	  广度搜索（BFS）
 		public class Solution {
 			public List<List<Integer>> levelOrderBottom(TreeNode root) {
