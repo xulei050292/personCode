@@ -30,4 +30,36 @@
 		
 	遍历实现方式：	http://www.cnblogs.com/ganganloveu/p/4131017.html
 	  解题思路：
-		深度优先遍历(DFS)，使用变量cur记录在栈中的节点之和。栈中的节点就是从根节点到当前节点的路径。如果当前节点是叶节点，则检查cur是否等于sum。
+		In the postorder traversal, the node will be removed from the stack only when the right sub-tree has been visited.so the path will be stored in the stack. we can keep check the SUM, the length from root to leaf node.
+        at leaf node, if SUM == sum, OK, return true. After postorder traversal, return false.
+		
+		public class Solution {
+			public boolean hasPathSum(TreeNode root, int sum) {
+				
+				Stack<TreeNode> stack = new Stack<TreeNode>();
+				TreeNode curNode = root;
+				TreeNode preNode = null;
+				int SUM = 0;
+				
+				while(curNode != null || !stack.empty()) {
+					while(curNode != null) {
+						stack.push(curNode);
+						SUM += curNode.val;
+						curNode = curNode.left;
+					}
+					curNode = stack.peek();
+					if(curNode.left == null && curNode.right == null && SUM == sum) {
+						return true;
+					}
+					if(curNode.right != null && preNode != curNode.right) {
+						curNode = curNode.right;
+					}else {
+						preNode = curNode;
+						stack.pop();
+						SUM -= curNode.val;
+						curNode = null;
+					}
+				}
+			  return false;
+			}
+		}
