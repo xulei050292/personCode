@@ -1,0 +1,72 @@
+package javaTest;
+
+
+public class JavaTest {
+	
+	public static boolean VerifySquenceOfBST(int[] sequence ,int start,int end) {
+		if(sequence == null || start < 0 || end < 0) {
+			System.out.println("can shu cuo wu");
+			return false;
+		}
+		
+		int root = sequence[end];
+		//在二叉搜索树中左子树节点的值小于根节点
+		int i = start;
+		for(; i < end; i++) {
+			if(sequence[i] > root) {
+				break;
+			}
+		}
+		
+		//在二叉搜索树中右子树节点的值大于根节点
+		int j = i;
+		for(; j < end; j++) {
+			if(sequence[j ] < root) {
+				System.out.println("失败");
+				return false;
+			}
+		}
+		
+		//判断左子树是否是二叉搜索树
+		boolean left = true;
+		if(i > start) {
+			left = VerifySquenceOfBST(sequence,start, i - 1);
+		}
+		
+		//判断右子树是否是二叉搜索树
+		boolean right = true;
+		if(i < end) {
+			right = VerifySquenceOfBST(sequence,i, end - 1);
+		}
+		
+		return (left && right);
+	}
+	 
+	public static void main(String[] args) {
+		/*Scanner scanner = new Scanner(System.in);
+		System.out.println("第一个字符串 ");
+		String string = scanner.nextLine();*/
+		
+		int[] test3 = {5,7,6,9,11,10,8};
+		boolean flag = JavaTest.VerifySquenceOfBST(test3,0,test3.length - 1);
+		System.out.println(flag);
+		
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

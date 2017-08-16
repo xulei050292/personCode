@@ -1,0 +1,63 @@
+package javaTest;
+
+import java.util.Stack;
+
+public class JavaTest {
+
+	private static Stack<Integer> dataStack = new Stack<Integer>();
+	private static Stack<Integer> minStack  = new Stack<Integer>();
+	
+	public static void push(int data) {
+		dataStack.push(data);
+		if(minStack.size() == 0 || data < minStack.peek()) {
+			minStack.push(data);
+		}else {
+			minStack.push(minStack.peek());
+		}
+	}
+	
+	public static void pop() {
+		assert(dataStack.size() > 0 && minStack.size() > 0);
+		minStack.pop();
+		dataStack.pop();
+	}
+	
+	public static int min() {
+		assert(dataStack.size() > 0 && minStack.size() > 0);
+		return minStack.peek();
+	}
+	 
+	public static void main(String[] args) {
+	
+		push(3);
+        System.out.println(min());
+        push(4);
+        System.out.println(min());
+        push(2);
+        System.out.println(min());
+        push(1);
+        System.out.println(min());
+        pop();
+        System.out.println(min());
+        pop();
+        System.out.println(min());
+        push(0);
+        System.out.println(min());
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

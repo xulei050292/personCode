@@ -1,0 +1,22 @@
+
+	public static boolean find(int[][] testArray,int rows,int columns,int number) {
+		
+		boolean found = false;
+		
+		if(testArray == null || testArray.length==0 || (testArray.length==1 && testArray[0].length==0) || rows < 0 || columns < 0) {
+			return false; 
+		}
+		int row = 0;
+		int column = columns - 1;
+		while(row < rows && column >= 0) {
+			if(testArray[row][column] == number) {
+				found = true;
+				break;
+			}else if(testArray[row][column] > number) {
+				--column;
+			}else{
+				++row;
+			}
+		  }
+		return found;
+	}

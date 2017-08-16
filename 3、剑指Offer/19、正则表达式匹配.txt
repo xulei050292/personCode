@@ -1,0 +1,60 @@
+package javaTest;
+
+import java.util.Scanner;
+
+public class JavaTest {
+
+	public static boolean matchCore(String input,int i,String pattern,int p) {
+		//终止条件1:input和pattern都到了字符串末尾
+		if(i == input.length() && p == pattern.length()) {
+			return true;
+		}
+		//终止条件2: 字符串input没有到末尾，pattern到了末尾
+		if(i != input.length() && p == pattern.length()) {
+			return false;
+		}
+		//终止条件3: 字符串input到末尾，pattern没有到末尾
+		if(i == input.length() && p != pattern.length()) {
+			return false;
+		}
+		
+		//pattern第二个字符为*
+		if(p + 1 < pattern.length() && pattern.charAt(p + 1) == '*') {
+			//首字母匹配
+			if(input.charAt(i) == pattern.charAt(p) || pattern.charAt(p) == '.') {
+				return matchCore(input, i + 1, pattern, p + 2)  //表示*出现1次
+					|| matchCore(input,i + 1,pattern,p)          //表示*出现多次
+					|| matchCore(input, i, pattern, p + 2);      //表示*出现0次  acd   ac*cd   
+				
+			}else {//首字母不匹配   awzd   am*zd   w和m没有匹配
+				return matchCore(input, i, pattern, p + 2);
+			}
+		}
+		
+		//pattern的下一个字母不是*，且当前字幕匹配
+		if(input.charAt(i) == pattern.charAt(p) || pattern.charAt(p) == '.') {
+			return matchCore(input, i + 1, pattern, p + 1);
+		}
+		
+		return false;
+	}
+	
+	
+	public static boolean match(String string,String pattern) {
+		if(string == null || pattern == null) {
+			return false;
+		}
+		return matchCore(string,0,pattern,0);
+	}
+	 
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("第一个字符串 ");
+		String string = scanner.nextLine();
+		System.out.println("匹配模式 ");
+		String pattern = scanner.nextLine();
+		
+		boolean result = JavaTest.match(string,pattern);
+		System.out.println(result);
+	}
+}

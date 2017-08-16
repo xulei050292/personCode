@@ -1,0 +1,81 @@
+package javaTest;
+
+import java.util.Scanner;
+
+public class JavaAlgrithmTest {
+	
+	public static int getDigitSum(int number) {
+		int sum = 0;
+		while(number > 0) {
+			sum += number % 10;
+			number /= 10;
+		}
+		return sum;
+	}
+	/**
+	 * @desc  校验机器人是否可以进入（row,col）这个点
+	 * @param threshold
+	 * @param rows
+	 * @param cols
+	 * @param row
+	 * @param col
+	 * @param visited
+	 * @return boolean
+	 */
+	public static boolean check(int threshold,int rows,int cols,int row,int col,boolean[] visited) {
+		if (row >= 0 && row < rows && col >= 0 && col < cols && (getDigitSum(row) + getDigitSum(col) <= threshold) && !visited[row * cols + col]) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static int movingCountCore(int threshold,int rows,int cols,int row,int col,boolean[] visited) {
+		
+		int count = 0;
+		if(check(threshold,rows,cols,row,col,visited)) {
+			visited[row * cols + col] = true;
+			count = 1 + movingCountCore(threshold, rows, cols, row - 1, col, visited)
+					  + movingCountCore(threshold, rows, cols, row, col - 1, visited)
+					  + movingCountCore(threshold, rows, cols, row + 1, col, visited)
+					  + movingCountCore(threshold, rows, cols, row, col + 1, visited);
+		}
+		
+		return count;
+	}
+	
+	public static int hasPath(int threshold,int rows,int cols) {
+		//校验参数
+		if(threshold < 0 || rows <= 0 || cols <= 0 ) {
+			System.out.println("参数错误");
+			return 0;
+		}
+		//变量初始化
+		boolean[] visited = new boolean[rows * cols];//初始化默认值是false；
+		
+		//进行搜索
+		int count = movingCountCore(threshold,rows,cols,0,0,visited);
+	
+		return count;
+	}
+	
+	public static void main(String[] args) {
+	
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("请输入阈值K：");
+		int k = scanner.nextInt();
+		
+		System.out.println("请输入矩阵行数rows：");
+		int rows = scanner.nextInt();
+		
+		System.out.println("请输入列数cols：");
+		int cols = scanner.nextInt();
+		
+		//System.out.println(k);
+		//System.out.println(rows);
+		//System.out.println(cols);
+        
+		int count = JavaAlgrithmTest.hasPath(k,rows,cols);
+		System.out.println(count);
+		
+	}
+}

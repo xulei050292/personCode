@@ -1,0 +1,68 @@
+package javaTest;
+
+import java.util.Stack;
+
+public class JavaTest {
+
+	private static Stack<Integer> dataStack = new Stack<Integer>();
+	private static Stack<Integer> minStack  = new Stack<Integer>();
+	
+	public static void isPopOrder(int[] pushStack ,int[] test) {
+		if(pushStack == null || pushStack.length == 0 || test == null || test.length == 0) {
+			System.out.println("can shu cuo wu ");
+			return ;
+		}
+		int len1 = pushStack.length;
+		int len2 = test.length;
+		if(len1 != len2) {
+			System.out.println("shu ju ge shu bu yi zhi ");
+			return ;
+		}
+		
+		Stack<Integer> stack = new Stack<Integer>();
+		int index = 0;
+		for(int i = 0;  i < len1; i++) {
+			stack.push(pushStack[i]);
+			while(!stack.isEmpty() && stack.peek() == test[index]) {
+				index++;
+				stack.pop();
+			}
+		}
+		
+		if(index == len1 && stack.isEmpty()) {
+			System.out.println("正确");
+			return ;
+		}else {
+			System.out.println("bu zheng que ");
+			return ;
+		}
+	}
+	 
+	public static void main(String[] args) {
+		
+		int[] test1 = {1,2,3,4,5};
+		int[] test2 = {4,3,5,1,2};
+		/*int[] test1 = new int[5];
+		int[] test2 = new int[5];
+		JavaTest.isPopOrder(null,null);*/
+		JavaTest.isPopOrder(test1,test2);
+		
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

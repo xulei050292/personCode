@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class Main {
+	
+	private static void Permutation(char[] charBegin, int pos) {
+		if(charBegin == null || charBegin.length == 0) {
+			System.out.println("字符串为空");
+			return ;
+		}
+		
+		if(pos == charBegin.length) {
+			System.out.println(Arrays.toString(charBegin));
+			
+		}else {
+			for(int i = pos; i < charBegin.length; i ++ ) {
+				char temp = charBegin[i];
+				charBegin[i] = charBegin[pos];
+				charBegin[pos] = temp;
+				
+				Permutation(charBegin,pos + 1);
+				
+				temp = charBegin[i];
+				charBegin[i] = charBegin[pos];
+				charBegin[pos] = temp;
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		String string = in.nextLine();
+		char[] charArray = string.toCharArray();
+		
+		/*int[] intArray = new int[8];
+		for(int i = 0; i < 8; i++) {
+			intArray[i] = in.nextInt();
+		}*/
+		
+		
+		Main.Permutation(charArray,0);
+    	
+    }
+}

@@ -1,0 +1,70 @@
+public static boolean isNumeric(String input) {
+		if(input == null || input.length() == 0) {
+			return false;
+		}
+		int index = 0;
+		boolean numberic = false;
+		if(input.charAt(index) == '+' || input.charAt(index) == '-') {
+			index++;
+		}
+		//判断整数部分
+		int beforeIndex = index;
+		while(index < input.length() && input.charAt(index) >= '0' && input.charAt(index) <= '9' ) {
+			index++;
+		}
+		if(index > beforeIndex) {
+			numberic = true;
+		}
+		
+		//判断小数部分
+		if(index < input.length() && input.charAt(index) == '.') {
+			index++;
+			if(index == input.length()) {
+				return false;
+			}
+			int beforeIndex2 = index;
+			boolean isFloat = false;
+			while(index < input.length() && input.charAt(index) >= '0' && input.charAt(index) <= '9' ) {
+				index++;
+			}
+			if(index > beforeIndex2) {
+				 isFloat= true;
+			}
+			numberic = isFloat || numberic;
+		}
+		//判断指数部分
+		if(index < input.length() && (input.charAt(index) == 'e' || input.charAt(index) == 'E')) {
+			index++;
+			if(index == input.length()) {
+				return false;
+			}
+			if(input.charAt(index) == '+' || input.charAt(index) == '-') {
+				index++;
+				if(index == input.length()) {
+					return false;
+				}
+			}
+			int beforeIndex3 = index;
+			boolean isE = false;
+			while(index < input.length() && input.charAt(index) >= '0' && input.charAt(index) <= '9' ) {
+				index++;
+			}
+			if(index > beforeIndex3) {
+				 isE= true;
+			}
+			numberic = isE || (index == input.length());
+		}
+		
+		return numberic && index == input.length();
+	}
+	 
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("第一个字符串 ");
+		String string = scanner.nextLine();
+		//System.out.println("匹配模式 ");
+		//String pattern = scanner.nextLine();
+		
+		boolean result = JavaTest.isNumeric(string);
+		System.out.println(result);
+	}

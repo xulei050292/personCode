@@ -30,8 +30,8 @@
 		
 	遍历实现方式：	http://www.cnblogs.com/ganganloveu/p/4131017.html
 	  解题思路：
-		In the postorder traversal, the node will be removed from the stack only when the right sub-tree has been visited.so the path will be stored in the stack. we can keep check the SUM, the length from root to leaf node.
-        at leaf node, if SUM == sum, OK, return true. After postorder traversal, return false.
+		In the postorder traversal, the node will be removed from the stack only when the right sub-tree has been visited.so the path will be stored in the stack. we can keep check 
+		the SUM, the length from root to leaf node 。at leaf node, if SUM == sum, OK, return true. After postorder traversal, return false.
 		
 		public class Solution {
 			public boolean hasPathSum(TreeNode root, int sum) {

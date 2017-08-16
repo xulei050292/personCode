@@ -1,0 +1,39 @@
+
+private static void FindPath(TreeNode root ,int expectedSum) {
+		if(root == null ) {
+			System.out.println("树参数错误");
+		}
+		Stack<Integer> path = new Stack<Integer>();
+		int currentSum = 0;
+		FindPath(root, expectedSum, path, currentSum);
+	}
+	
+	private static void FindPath(TreeNode root, int expectedSum, Stack<Integer> path,int currentSum) {
+		currentSum += root.value;
+		path.push(root.value);
+		
+		//如果是叶节点，并且路径和等于输入值
+		if(currentSum == expectedSum && (root.left == null && root.right == null)) {
+			System.out.println("A path is found: ");
+			for(int i : path) {
+				System.out.print(i + "   ");
+			}
+		}
+		
+		//如果不是叶节点，则遍历他的子节点
+		if(root.left != null) {
+			FindPath(root.left, expectedSum, path, currentSum);
+		}
+		if(root.right != null) {
+			FindPath(root.right, expectedSum, path,currentSum);
+		}
+		//在返回父节点之前，可在路径上删除当前节点的value；
+		//因为递归的方法，可以自动返回上一个节点，所以需要在代码中写出。
+		path.pop();
+	}
+	
+	public static void main(String[] args) {
+		
+		Main.FindPath(root,22);
+    	
+    }
