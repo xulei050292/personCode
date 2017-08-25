@@ -1,0 +1,96 @@
+	/** 递归实现前序遍历 */ 
+	public static void preOrder(TreeNode node) {
+		System.out.println(node.value);
+		preOrder(node.left);
+		preOrder(node.left);
+	}
+	
+	/** 递归实现中序遍历 */  
+	public static void inOrder(TreeNode node) {
+		inOrder(node.left);
+		System.out.println(node.left);
+		inOrder(node.right);
+	}
+	
+	 /** 递归实现后序遍历 */ 
+	public static void postOrder(TreeNode node) {
+		postOrder(node.left);
+		postOrder(node.right);
+		System.out.println(node.value);
+	}
+	
+	
+	/** 非递归实现前序遍历 */
+	public static void iterativePreOder(TreeNode node) {
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		if(node != null) {
+			stack.push(node);
+			while(!stack.empty()) {
+				node = stack.pop();
+				System.out.println(node.value);
+				//因为栈是先进后出：所以要push右子树。
+				if(node.right != null) {
+					stack.push(node.right);
+				}
+				if(node.left != null) {
+					stack.push(node.left);
+				}
+			}
+		}
+	}
+	
+	 /** 非递归实现后序遍历 */
+	public static void iterativePostOrder(TreeNode node) {
+		TreeNode treeNode = node;
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		
+		while(node != null) {
+			//左子树入栈
+			for(; node.left != null; node = node.left) {
+				stack.push(node);
+			}
+			//当前节点无右子树或者右子树已经输出
+			while(node != null && (node.right == null || node.right == treeNode)) {
+				System.out.println(node.value);
+				treeNode = node;
+				if(stack.empty()) {
+					return;
+				}else {
+					node = stack.pop();
+				}
+			}
+			//处理右子树
+			stack.push(node);
+			node = node.right;
+		}
+	}
+	
+	/** 非递归实现中序遍历 */
+	public static void iterativeInorder(TreeNode node) {
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		while(node != null) {
+			
+			while(node != null) {
+				if(node.right != null) {
+					stack.push(node.right);
+				}
+				stack.push(node);
+				node = node.left;
+			}
+			
+			node = stack.pop();
+			//没有右子树，直接出栈
+			while(!stack.empty() && node.right == null) {
+				System.out.println(node.value);
+				node = stack.pop();
+			}
+			
+			//有右子树，开始下一次循环
+			System.out.println(node.value);
+			if(!stack.empty()) {
+				node = stack.pop();
+			}else {
+				node = null;
+			}
+		}
+	}

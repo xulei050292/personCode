@@ -1,0 +1,70 @@
+import java.util.*;
+
+public class Main {
+	
+	/**
+	 * @desc  寻找出现一次的两个数
+	 * @param data
+	 */
+	public static Set<Vector<Integer>> find_triplets(int[] data) {
+		if(data == null && data.length == 0) {
+			System.out.println("can shu cuo wu");
+			return null ;
+		}
+		int length = data.length;
+		
+		//对原始数据进行排序
+		Arrays.sort(data);
+		
+		//因为原始数据中可以有重复数据，防止出现重复的结果，所以使用set这种数据结构
+		Set<Vector<Integer>> set = new HashSet<>();
+		
+		for(int i = 0; i < length ; i++) {
+			int j = i + 1;
+			int k = length - 1;
+			
+			while(j < k) {
+				int sumTwo = data[i] + data[j];
+				if(sumTwo + data[k] < 0) {
+					j++;
+				}else if(sumTwo + data[k] > 0) {
+					k--;
+				}else {
+					Vector<Integer> triplet = new Vector<>();
+					
+					triplet.add(data[i]);
+					triplet.add(data[j]);
+					triplet.add(data[k]);
+					set.add(triplet);
+					
+					j++;
+					k--;
+				}
+			}
+		}
+		return set;
+	}
+	
+	public static void main(String[] args) {
+		
+		int[] data = {-1,0,1,2,-1,4};
+		
+		Set<Vector<Integer>> setData = find_triplets(data);
+
+		for (Vector<Integer> vector : setData) {
+			System.out.println(vector.toString());
+		}
+	}
+}
+
+结果集：
+	[-1, 0, 1]
+	[-1, -1, 2]
+	
+	
+如果不适用set：
+	[-1, 0, 1]
+	[-1, 0, 1]
+	[-1, -1, 2]	
+	很明显有重复数据。
+	

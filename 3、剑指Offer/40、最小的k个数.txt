@@ -1,0 +1,90 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+
+	/**
+	 * @desc 建立最大堆
+	 * @param kArrData
+	 * @param lastIndx
+	 */
+	public static void buildMaxHeap(int[] kArrData, int length) {
+		//最后一个有孩子的节点位置 i = (length - 1) / 2;
+		for(int i = (length - 1) / 2; i >= 0; i--) {  
+            int k = i; 
+            int child = 2 * k + 1; //左孩子节点的位置 （child + 1）为右孩子节点的位置
+            while(child <= length){  
+                if(child + 1 < length && kArrData[child] < kArrData[child + 1]){  
+                        child++;  
+                }  
+                if(kArrData[k] < kArrData[child]){  
+                    swap(kArrData,k,child);  
+                    k = child;  
+                } else {
+                	break; 
+                }    
+            }  
+        }  
+	}
+	/**
+	 * @desc  堆排序
+	 * @param kArrData
+	 */
+	public static void heapSort(int[] kArrData) {
+		
+		for(int i = kArrData.length - 1; i > 0 ; i-- ) {
+			//调整堆（其实第一次的实质是新建）
+			buildMaxHeap(kArrData, i);
+			//交换堆顶元素KArrData[0]和堆中最后一个元素
+			swap(kArrData,0,i);
+		}
+	}
+	
+	public static void swap(int[] arr,int i ,int j){  
+        int temp = arr[i];  
+        arr[i] = arr[j];  
+        arr[j] = temp;  
+	}  
+	
+	/**
+	 * @desc  获取最小的k个数
+	 * @param arrData
+	 * @param k
+	 */
+	public static void getLeastNumbers(int[] arrData, int k) {
+		if(arrData == null || arrData.length == 0 || k < 1 || k > arrData.length) {
+			System.out.println("参数错误");
+			return ;
+		}
+		//根据输入数据数组的前k个数，建立最大堆
+		int[] kArrData = Arrays.copyOfRange(arrData, 0, k);
+		heapSort(kArrData);
+		
+		//从k+1个数开始与根节点比较: 大于根节点，舍去 ;  小于根节点，取代根节点，重建最大堆 
+		for(int i = k; i < arrData.length; i++){  
+            if(arrData[i] < kArrData[k-1]){  
+            	kArrData[k-1] = arrData[i];  
+                heapSort(kArrData);  
+            }  
+        }
+		
+		//输出结果
+		for(int i : kArrData) {
+			System.out.println(i);
+		}
+	}
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int num = sc.nextInt();
+		
+		int[] intArray = new int[num];
+		for(int i = 0; i < num; i++) {
+			intArray[i] = sc.nextInt();
+		}
+		
+		int k = sc.nextInt();
+		Main.getLeastNumbers(intArray,k);
+
+	}
+}

@@ -1,0 +1,68 @@
+import java.util.*;
+
+public class Main {
+	
+	/**
+	 * @desc  判断number的第index位是否为1
+	 * @param number
+	 * @param index
+	 * @return
+	 */
+	public static boolean isBit1(int number,int index) {
+		number = number >> index;
+		return (number & 1) == 0;
+		
+	}
+	/**
+	 * @desc  根据num，转换成bit，得到第一个为1的下标
+	 * eg: num = 2    0010  index = 1;
+	 * @param num
+	 * @return
+	 */
+	public static int findFirstBitIs1(int num) {
+		int indexBit = 0;
+		while((num & 1) == 0) {
+			num = num >> 1;
+			++indexBit;
+		}
+		return indexBit;
+	}
+	
+	/**
+	 * @desc  寻找出现一次的两个数
+	 * @param data
+	 */
+	public static void findNumsAppearOnce(int[] data) {
+		if(data == null && data.length == 0) {
+			System.out.println("can shu cuo wu");
+			return ;
+		}
+		int length = data.length;
+		
+		int resultExclusiveOR = 0;
+		for(int i = 0; i < length; i++) {
+			resultExclusiveOR ^= data[i];
+		}
+		
+		int indexOf1 = findFirstBitIs1(resultExclusiveOR);
+		
+		int number1 = 0, number2 = 0;
+		for(int i = 0; i < length; i++) {
+			if(isBit1(data[i],indexOf1)) {
+				number1 ^= data[i];
+			}else {
+				number2 ^= data[i];
+			}
+		}
+		System.out.println(number1);
+		System.out.println(number2);
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		int[] data = {2,4,3,6,3,2,5,5};
+		findNumsAppearOnce(data);
+	}
+}
+

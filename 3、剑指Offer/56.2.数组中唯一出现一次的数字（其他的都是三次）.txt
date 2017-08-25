@@ -1,0 +1,52 @@
+错误的for循环的数组结果：[6, 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+结果是：1610612736
+
+正确的for循环的数组结果：[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 6]
+结果是：6
+
+import java.util.*;
+
+public class Main {
+	
+	/**
+	 * @desc  寻找出现一次的两个数
+	 * @param data
+	 */
+	public static void findNumsAppearOnce(int[] data) {
+		if(data == null && data.length == 0) {
+			System.out.println("can shu cuo wu");
+			return ;
+		}
+		int length = data.length;
+		
+		int[] bitSum = new int[32];
+		
+		for(int i = 0; i < length; i++) {
+			int bitMask = 1;
+			//for(int j = 0 ; j < 32; j++) {  这么写是错误的
+			for(int j = 31; j >= 0; j--) {
+				int bit = data[i] & bitMask;
+				if(bit != 0) {
+					bitSum[j] += 1;
+				}
+				bitMask = bitMask << 1;
+			}
+		}
+		System.out.println(Arrays.toString(bitSum));
+		
+		int result = 0;
+		for(int i = 0; i < 32; i++) {
+			result = result << 1;
+			result += bitSum[i] % 3;
+		}
+		
+		System.out.println(result);
+	}
+	
+	public static void main(String[] args) {
+		
+		int[] data = {2,2,3,3,6,3,2,5,5,5};
+
+		findNumsAppearOnce(data);
+	}
+}

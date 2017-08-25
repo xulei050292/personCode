@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+方法一：
+public class Main {
+	
+	public static void FindGreatestSumOfSubArray(int[] arrData ) {
+		if(arrData == null || arrData.length == 0 ) {
+			System.out.println("参数错误");
+			return ;
+		}
+		
+		int currentSum = 0;
+		int greatestSum = Integer.MIN_VALUE;
+		for(int i = 0; i < arrData.length; i++) {
+			if(currentSum <= 0 ) {
+				currentSum = arrData[i];
+			}else {
+				currentSum += arrData[i];
+			}
+			if(currentSum > greatestSum) {
+				greatestSum = currentSum;
+			}
+		}
+		System.out.println(greatestSum);
+	}
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int num = sc.nextInt();
+		
+		int[] intArray = new int[num];
+		for(int i = 0; i < num; i++) {
+			intArray[i] = sc.nextInt();
+		}
+		
+		Main.FindGreatestSumOfSubArray(intArray);
+
+		//Stack<Integer> stack = new Stack<Integer>();
+		//stack.clear();
+	}
+}
+
+
+
+方法二：
+	动态规划分析，但是不能使用递归实现，要使用循环实现，代码同上。
+
+
+
+
+
+
+

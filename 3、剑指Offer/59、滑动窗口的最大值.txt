@@ -1,0 +1,27 @@
+public ArrayList<Integer> maxInWindows(int [] num, int size) {  
+        ArrayList<Integer> list = new ArrayList<>();  
+        if (num == null)  
+            return list;  
+        
+        if (num.length < size || size <= 0)  
+            return list;  
+        
+        Deque<Integer> queue = new LinkedList<>();  
+        
+        for (int i=0; i < num.length; i++){ 
+        	
+            while (!queue.isEmpty() && num[i] >= num[queue.getLast()])  
+               queue.pollLast();  
+             
+            //当一个数字的下标与当前处理的数字下标之差大于滑动窗口大小时，说明这个数字从窗口中滑出了，可以删除了。
+            while (!queue.isEmpty() && (size - 1) < i - queue.getFirst())
+               queue.pollFirst();  
+            
+            queue.offerLast(i); 
+            
+            if (i + 1 >= size)  
+                list.add(num[queue.getFirst()]);  
+        }  
+        
+        return list;  
+    }  

@@ -1,0 +1,65 @@
+/**
+	 * 将问题转化为求链表最后一个共同节点 
+	 * @param list1
+	 * @param list2
+	 * @return
+	 */
+	public static TreeNode getLastCommonParent(List<TreeNode> list1, List<TreeNode> list2) {
+		TreeNode tempNode = null;
+		for(int i = 0; i < list1.size(); i++) {
+			if(list1.get(i) != list2.get(i)) {
+				break;
+			}
+			tempNode = list1.get(i);
+		}
+		return tempNode;
+	}
+	
+	/**
+	 *  获取根节点到目标节点的路径
+	 * @param root
+	 * @param target
+	 * @param tempList
+	 * @param path
+	 */
+	public static void getNodePath(TreeNode root, TreeNode target, List<TreeNode> tempList, List<TreeNode> path) {
+		if(root == null) {
+			return ;
+		}
+		tempList.add(root);
+		List<TreeNode> children = root.children;  //普通树：childern代表多个孩子
+		for(TreeNode node : children) {
+			if(node == target) {
+				path.addAll(tempList);
+				break;
+			}
+			getNodePath(node, target, tempList, path);
+		}
+		tempList.remove(tempList.size() - 1);
+	}
+	
+	/**
+	 * 获取两个节点的最低公共祖先 
+	 * @param root
+	 * @param p1
+	 * @param p2
+	 * @return
+	 */
+	public static TreeNode getLastCommonParent(TreeNode root, TreeNode p1, TreeNode p2) {
+		if(root == null || p1 == null || p2 == null) {
+			return null;
+		}
+		
+		List<TreeNode> path1 = new ArrayList<>();
+		List<TreeNode> path2 = new ArrayList<>();
+		List<TreeNode> tempList = new ArrayList<>();
+		
+		getNodePath(root,p1,tempList,path1);
+		getNodePath(root,p2,tempList,path2);
+		
+		if(path1.size() == 0 || path2.size() == 0) {
+			return null;
+		}
+		
+		return getLastCommonParent(path1, path2);
+	}
