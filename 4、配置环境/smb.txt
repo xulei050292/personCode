@@ -1,0 +1,13 @@
+http://www.cnblogs.com/mchina/archive/2012/12/18/2816717.html
+
+[global]
+    workgroup = LinuxSir
+    netbios name = LinuxSir05
+    server string = Linux Samba Server TestServer
+    security = share
+
+[xulei]
+    path = /shareFile
+    writeable = yes
+    browseable = yes
+    guest ok = yes
